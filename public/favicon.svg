@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96">
+  <circle cx="48" cy="48" r="47" fill="#021B4E"/>
+  <circle cx="48" cy="48" r="40" fill="none" stroke="#0EA5E9" stroke-width="3"/>
+  <text x="48" y="50" text-anchor="middle" dominant-baseline="central"
+        font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="34" font-weight="800" fill="#fff">ND</text>
+</svg>
