@@ -60,20 +60,23 @@ The site ships with elegant, brand‑coloured **placeholders** so it looks compl
 the box. Drop the real files at these paths to replace them automatically — no code
 changes required (each component checks `file_exists` and falls back to the placeholder):
 
-| Asset                         | Path                                   |
-| ----------------------------- | -------------------------------------- |
+| Asset                         | Path                                    |
+| ----------------------------- | --------------------------------------- |
 | Nelo Dreams logo (circular)   | `public/images/logo-nelo.jpeg`          |
 | Rangers Foundation logo       | `public/images/logo-rangers.jpeg`       |
-| Hero background photo         | `public/images/hero.jpg`               |
-| About section photo           | `public/images/about.jpg`              |
-| CTA background photo          | `public/images/cta.jpg`                |
-| Program photos                | `public/images/programs/*.jpg`         |
-| Impact story photos           | `public/images/impact/*.jpg`           |
-| Gallery photos                | `public/images/gallery/*.jpg`          |
+| Diamond Tech Innovations logo | `public/images/logo-dti.jpeg`           |
+| Hero background photo         | `public/images/hero.jpg`                |
+| About section photo           | `public/images/about.jpg`               |
+| CTA background photo          | `public/images/cta.jpg`                 |
+| Program photos                | `public/images/programs/*.jpg`          |
+| Impact story photos           | `public/images/impact/*.jpg`            |
+| Gallery photos                | `public/images/gallery/*.jpg`           |
+| Featured impact video         | `public/videos/featured.mp4`            |
 
-`.png`, `.jpg`, `.svg` and `.webp` are all accepted for the logos. Image paths for
-programs / stories / gallery are defined in the seeders and stored in the database, so you
-can also manage them from a future admin panel.
+`.png`, `.jpg`, `.jpeg`, `.svg` and `.webp` are all accepted for the logos. Image paths
+for programs / stories / gallery are defined in the seeders and stored in the database, so
+you can also manage them from a future admin panel. Large source media kept locally for
+reference can live under `public/images/_archive/` — that folder is gitignored.
 
 ---
 

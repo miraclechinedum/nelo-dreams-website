@@ -87,7 +87,7 @@
 
         {{-- bottom --}}
         <div class="flex flex-col gap-4 border-t border-white/10 py-7 text-sm text-electric-100/60 sm:flex-row sm:items-center sm:justify-between">
-            <p>© {{ date('Y') }} Nelo Dreams Foundation International. All rights reserved.</p>
+            <p>© 2018–{{ date('Y') }} Nelo Dreams Foundation International. All rights reserved.</p>
             <p class="flex items-center gap-2">
                 In strategic partnership with
                 <span class="font-semibold text-white">Rangers Int’l FC Foundation</span>

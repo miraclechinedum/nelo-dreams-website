@@ -1,6 +1,9 @@
 @php
     $tones = ['navy', 'electric', 'mixed', 'sky'];
     $spanClass = ['wide' => 'sm:col-span-2', 'tall' => 'row-span-2', 'normal' => ''];
+    $featuredVideo = file_exists(public_path('videos/featured.mp4')) ? 'videos/featured.mp4' : null;
+    $featuredPoster = file_exists(public_path('images/impact/school-campaign.jpg'))
+        ? 'images/impact/school-campaign.jpg' : null;
 @endphp
 
 <section id="impact" class="relative overflow-hidden bg-navy-50/60 py-24 lg:py-32">
@@ -10,6 +13,34 @@
                 Behind every number is a classroom that grew kinder, a parent who learned to listen, a child who found the words. These are some of the moments along the way.
             </x-section-header>
         </x-reveal>
+
+        {{-- Featured video --}}
+        @if ($featuredVideo)
+            <x-reveal class="mb-16">
+                <figure class="surface group relative overflow-hidden p-0">
+                    <div class="relative aspect-video w-full bg-navy-900">
+                        <video controls preload="metadata" playsinline
+                               @if ($featuredPoster) poster="{{ asset($featuredPoster) }}" @endif
+                               class="h-full w-full object-cover">
+                            <source src="{{ asset($featuredVideo) }}" type="video/mp4">
+                            Your browser doesn’t support embedded video.
+                        </video>
+                    </div>
+                    <figcaption class="flex flex-wrap items-center justify-between gap-3 border-t border-navy-100 p-5">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-electric-50 text-electric-600">
+                                <x-icon name="play" class="h-5 w-5" />
+                            </span>
+                            <div>
+                                <p class="text-sm font-bold text-navy-900">From the field</p>
+                                <p class="text-xs text-navy-500">A moment with the children we serve</p>
+                            </div>
+                        </div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-electric-600">Watch</span>
+                    </figcaption>
+                </figure>
+            </x-reveal>
+        @endif
 
         {{-- Timeline --}}
         <div class="relative">
@@ -33,7 +64,7 @@
                 </h3>
             </x-reveal>
 
-            <div class="grid auto-rows-[160px] grid-cols-2 gap-4 sm:grid-cols-4 sm:auto-rows-[200px]">
+            <div class="grid auto-rows-[160px] grid-cols-2 gap-4 [grid-auto-flow:dense] sm:grid-cols-4 sm:auto-rows-[200px]">
                 @foreach ($gallery as $i => $image)
                     <x-reveal :delay="($i % 4) * 70"
                         class="group relative overflow-hidden rounded-2xl {{ $spanClass[$image->span] ?? '' }}">

@@ -91,6 +91,13 @@
         @apply bg-white text-ink font-sans antialiased;
     }
 
+    /* Hint browsers to use the highest-quality bicubic scaling for raster media.
+       Best-effort: helps in Chromium when JPEGs are scaled up; harmless elsewhere. */
+    img,
+    video {
+        image-rendering: -webkit-optimize-contrast;
+    }
+
     /* Anchor offset so section titles clear the fixed header */
     [id] {
         scroll-margin-top: 6.5rem;

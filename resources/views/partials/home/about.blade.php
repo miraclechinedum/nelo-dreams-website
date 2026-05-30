@@ -21,9 +21,9 @@
         {{-- Copy --}}
         <div class="flex flex-col gap-7">
             <x-reveal>
-                <x-section-header eyebrow="Who We Are"
+                <x-section-header eyebrow="Who We Are · Est. 2018"
                     title="Every Child Should Know Their Mind Matters">
-                    We believe mental health is not a luxury — it is a childhood right. From the classroom to the community, we make emotional skills and mental health awareness something every child can understand, practise, and carry for life.
+                    Founded in 2018, Nelo Dreams Foundation believes mental health is not a luxury — it is a childhood right. From the classroom to the community, we make emotional skills and mental health awareness something every child can understand, practise, and carry for life.
                 </x-section-header>
             </x-reveal>
 
