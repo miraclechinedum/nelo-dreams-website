@@ -65,17 +65,28 @@
             </x-reveal>
 
             <div class="grid auto-rows-[160px] grid-cols-2 gap-4 [grid-auto-flow:dense] sm:grid-cols-4 sm:auto-rows-[200px]">
-                @foreach ($gallery as $i => $image)
+                @foreach ($gallery as $i => $item)
                     <x-reveal :delay="($i % 4) * 70"
-                        class="group relative overflow-hidden rounded-2xl {{ $spanClass[$image->span] ?? '' }}">
-                        <x-media :src="$image->image" :alt="$image->title" :tone="$tones[$i % count($tones)]"
-                                 :icon="'globe'" rounded="rounded-2xl"
-                                 class="transition-transform duration-700 ease-out group-hover:scale-105" />
-                        <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
-                        @if ($image->caption)
-                            <p class="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 p-4 text-sm font-medium text-white opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-                                {{ $image->caption }}
-                            </p>
+                        class="group relative overflow-hidden rounded-2xl {{ $spanClass[$item->span] ?? '' }}">
+                        @if ($item->isVideo())
+                            <video controls preload="metadata" playsinline class="h-full w-full rounded-2xl object-cover"
+                                   @if ($item->poster) poster="{{ asset($item->poster) }}" @endif>
+                                <source src="{{ asset($item->path) }}" type="video/mp4">
+                                Your browser doesn’t support embedded video.
+                            </video>
+                            <span class="pointer-events-none absolute left-3 top-3 inline-flex items-center gap-1.5 rounded-full bg-navy-950/70 px-2.5 py-1 text-[11px] font-semibold text-white backdrop-blur">
+                                <x-icon name="play" class="h-3 w-3" /> Video
+                            </span>
+                        @else
+                            <x-media :src="$item->path" :alt="$item->title" :tone="$tones[$i % count($tones)]"
+                                     :icon="'globe'" rounded="rounded-2xl"
+                                     class="transition-transform duration-700 ease-out group-hover:scale-105" />
+                            <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-navy-950/70 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100"></div>
+                            @if ($item->caption)
+                                <p class="pointer-events-none absolute inset-x-0 bottom-0 translate-y-2 p-4 text-sm font-medium text-white opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
+                                    {{ $item->caption }}
+                                </p>
+                            @endif
                         @endif
                     </x-reveal>
                 @endforeach

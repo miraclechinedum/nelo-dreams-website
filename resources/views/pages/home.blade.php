@@ -9,6 +9,7 @@
     @include('partials.home.programs')
     @include('partials.home.values')
     @include('partials.home.impact')
+    @include('partials.home.updates')
     @include('partials.home.testimonials')
     @include('partials.home.partnership')
     @include('partials.home.approach')

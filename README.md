@@ -84,10 +84,15 @@ reference can live under `public/images/_archive/` — that folder is gitignored
 
 ```
 app/
-├── Http/Controllers/      HomeController, ContactController
-├── Http/Requests/         StoreContactRequest (validation + honeypot)
+├── Console/Commands/      CreateAdminUser (php artisan admin:user)
+├── Http/Controllers/      HomeController, UpdateController, ContactController
+│                          Auth/LoginController, Admin/* (dashboard, posts,
+│                          media, messages, account)
+├── Http/Requests/         StoreContactRequest (validation + honeypot),
+│                          Admin/PostRequest, Admin/MediaItemRequest
+├── Support/               MediaStorage (uploads → public/uploads)
 └── Models/                Statistic, Objective, CoreValue, Program,
-                           ImpactStory, GalleryImage, Partner, Testimonial,
+                           ImpactStory, Post, MediaItem, Partner, Testimonial,
                            ContactMessage  (+ Concerns/Publishable trait)
 
 database/
@@ -98,16 +103,18 @@ resources/
 ├── css/app.css            Design system: brand palette, type, motion
 ├── js/app.js              Alpine + counter, reveal observer, sticky header
 └── views/
-    ├── layouts/app.blade.php
+    ├── layouts/           app.blade.php, admin.blade.php
     ├── components/        button, card, program-card, objective-card,
     │                      value-card, testimonial, timeline-item, stat,
     │                      section-header, media, reveal, icon, logo/*
-    ├── pages/home.blade.php
+    ├── pages/             home.blade.php, updates/{index,show}
+    ├── admin/             dashboard, posts/*, media/*, messages, account
+    ├── auth/login.blade.php
     └── partials/
         ├── header.blade.php, footer.blade.php
         └── home/          hero, about, objectives, programs, values, impact,
-                           testimonials, partnership, approach, cta, contact
-                           + infographics/
+                           updates, testimonials, partnership, approach, cta,
+                           contact + infographics/
 ```
 
 ---
@@ -125,12 +132,49 @@ and wired to an admin UI later. Each content model uses the `Publishable` trait 
 | `CoreValue`      | `core_values`      | AIDDT values                    |
 | `Program`        | `programs`         | Programs grid                   |
 | `ImpactStory`    | `impact_stories`   | Impact timeline                 |
-| `GalleryImage`   | `gallery_images`   | “From the field” gallery        |
+| `Post`           | `posts`            | `/updates` — news & outreach reports |
+| `MediaItem`      | `media_items`      | Photos/videos: “From the field” gallery + post attachments |
 | `Partner`        | `partners`         | Rangers partnership + partners  |
 | `Testimonial`    | `testimonials`     | Community voices                |
 | `ContactMessage` | `contact_messages` | Submitted contact enquiries     |
 
-Re‑seed any time with `php artisan db:seed` (idempotent — uses `updateOrCreate`).
+Re‑seed any time with `php artisan db:seed` (idempotent — uses `updateOrCreate`;
+it never touches anything uploaded through the admin panel).
+
+---
+
+## Admin panel
+
+The foundation posts its own pictures, videos and write-ups at **`/admin`**
+(sign in at `/admin/login`; there is also a *Staff sign-in* link in the footer).
+
+| Section | What it does |
+| ------- | ------------ |
+| **Posts** | Headline, summary, full text, date, venue, hashtags — plus any number of attached photos and videos. Published posts appear at `/updates`, on the home page, and each gets its own page. |
+| **Photos & videos** | Upload individual files, caption them, set their size in the bento grid, and choose whether each shows in the “From the field” gallery. |
+| **Messages** | Contact-form enquiries. |
+| **My account** | Change name, sign-in email and password. |
+
+There is no public registration — accounts are created from the command line:
+
+```bash
+php artisan admin:user info@nelodreams.org --name="Nelo Dreams Admin"
+# same command resets the password of an existing account
+```
+
+`DatabaseSeeder` also creates one, using `ADMIN_EMAIL` / `ADMIN_PASSWORD` from
+`.env` (or a random password it prints once).
+
+**How uploads are stored.** Files go straight into `public/uploads/YYYY/MM/`
+and are saved as public-relative paths (`uploads/2026/08/photo-a1b2c3d4.jpg`),
+exactly like the hand-placed files in `public/images`. No `storage:link` symlink
+is involved — that matters because the site runs on shared hosting without SSH.
+The folder's contents are git-ignored, and `deploy/build-bundle.sh` excludes it
+so a re-deploy can never overwrite what is already live.
+
+Photos are capped at 8MB and videos at 128MB in validation; the real ceiling is
+whatever PHP allows (`upload_max_filesize` / `post_max_size`), which the admin
+dashboard displays.
 
 ---
 

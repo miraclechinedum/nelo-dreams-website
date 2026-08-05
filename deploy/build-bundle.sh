@@ -62,12 +62,19 @@ cp "${PROJECT_ROOT}/deploy/.env.production.example" "${LARAVEL_DIR}/.env"
 
 # --- 4. arrange the public_html half -----------------------------------------
 mkdir -p "${PUB_DIR}"
-# everything from /public except the index.php (we use the deploy version)
+# everything from /public except the index.php (we use the deploy version).
+# `uploads/` is excluded on purpose: that folder holds the photos and videos the
+# foundation adds through the admin panel, and re-deploying must never overwrite
+# what is already live on the server.
 rsync -a \
   --exclude='index.php' \
   --exclude='hot' \
   --exclude='images/_archive/' \
+  --exclude='uploads/' \
   "${PROJECT_ROOT}/public/" "${PUB_DIR}/"
+# …but the (empty) folder itself has to exist and be writable.
+mkdir -p "${PUB_DIR}/uploads"
+chmod 755 "${PUB_DIR}/uploads"
 # the production index.php that points autoload to ../laravel-app
 cp "${PROJECT_ROOT}/deploy/index.php"  "${PUB_DIR}/index.php"
 # the one-time setup helper (delete after use)

@@ -6,13 +6,37 @@
     <meta name="theme-color" content="#021B4E">
     <link rel="icon" href="{{ asset('favicon.svg') }}" type="image/svg+xml">
 
-    <title>@yield('title', 'Nelo Dreams Foundation International — Glad You Were Born')</title>
-    <meta name="description" content="@yield('meta_description', 'Nelo Dreams Foundation International equips children with mental health knowledge, emotional skills, and confidence to thrive — in partnership with Rangers International FC Foundation.')">
+    @php
+        $siteName = 'Nelo Dreams Foundation International';
+        $defaultTitle = $siteName.' | Empowering Lives, Transforming Communities';
+        $defaultDescription = 'Nelo Dreams Foundation International is dedicated to empowering vulnerable children, women, and communities through education, humanitarian support, skills development, healthcare initiatives, and sustainable programs that create lasting impact and hope for a brighter future.';
+        $shareImage = asset('images/og-image.jpg');
+    @endphp
 
-    {{-- Open Graph --}}
-    <meta property="og:title" content="@yield('title', 'Nelo Dreams Foundation International')">
-    <meta property="og:description" content="Every child deserves mental health knowledge. Glad You Were Born.">
+    <title>@yield('title', $defaultTitle)</title>
+    <meta name="description" content="@yield('meta_description', $defaultDescription)">
+    <link rel="canonical" href="{{ url()->current() }}">
+
+    {{-- Open Graph (Facebook, WhatsApp, LinkedIn, Slack…) --}}
+    <meta property="og:site_name" content="{{ $siteName }}">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', $defaultTitle)">
+    <meta property="og:description" content="@yield('meta_description', $defaultDescription)">
+    <meta property="og:image" content="{{ $shareImage }}">
+    <meta property="og:image:secure_url" content="{{ $shareImage }}">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ $siteName }} — Glad You Were Born">
+    <meta property="og:locale" content="en_US">
+
+    {{-- Twitter / X cards --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="@yield('title', $defaultTitle)">
+    <meta name="twitter:description" content="@yield('meta_description', $defaultDescription)">
+    <meta name="twitter:image" content="{{ $shareImage }}">
+    <meta name="twitter:image:alt" content="{{ $siteName }} — Glad You Were Born">
 
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">

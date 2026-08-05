@@ -155,6 +155,37 @@
         background-image: linear-gradient(90deg, transparent, var(--color-navy-200), transparent);
     }
 
+    /* ---- Admin panel form controls ---- */
+    .admin-label {
+        @apply block text-sm font-semibold text-navy-800;
+    }
+    .admin-input {
+        @apply mt-1.5 block w-full rounded-xl border-navy-200 bg-white text-[15px] text-navy-900 shadow-sm
+               placeholder:text-navy-300 focus:border-electric-400 focus:ring-2 focus:ring-electric-200;
+    }
+    .admin-hint {
+        @apply mt-1.5 text-xs leading-relaxed text-navy-400;
+    }
+    .admin-error {
+        @apply mt-1.5 text-xs font-semibold text-rose-600;
+    }
+    .admin-btn {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-electric-500 px-5 py-2.5 text-sm font-semibold
+               text-white shadow-sm transition hover:bg-electric-600 focus:outline-none focus-visible:ring-2
+               focus-visible:ring-electric-400 focus-visible:ring-offset-2 disabled:opacity-60;
+    }
+    .admin-btn-ghost {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-semibold
+               text-navy-700 ring-1 ring-inset ring-navy-200 transition hover:bg-navy-50 hover:text-navy-900;
+    }
+    .admin-btn-danger {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold
+               text-rose-600 ring-1 ring-inset ring-rose-200 transition hover:bg-rose-50;
+    }
+    .admin-chip {
+        @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold;
+    }
+
     /* Infographic animations — driven by the parent .reveal.is-shown */
     .viz-bar {
         width: 0;

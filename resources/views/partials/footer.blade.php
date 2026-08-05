@@ -1,21 +1,25 @@
 @php
+    // Absolute URLs so the footer works on /updates as well as the home page.
+    $home = route('home');
+
     $footerCols = [
         'Foundation' => [
-            ['label' => 'About Us', 'href' => '#about'],
-            ['label' => 'Our Objectives', 'href' => '#objectives'],
-            ['label' => 'Core Values', 'href' => '#values'],
-            ['label' => 'Our Impact', 'href' => '#impact'],
+            ['label' => 'About Us', 'href' => $home.'#about'],
+            ['label' => 'Our Objectives', 'href' => $home.'#objectives'],
+            ['label' => 'Core Values', 'href' => $home.'#values'],
+            ['label' => 'Our Impact', 'href' => $home.'#impact'],
         ],
         'Our Work' => [
-            ['label' => 'Programs', 'href' => '#programs'],
-            ['label' => 'Rangers Partnership', 'href' => '#partnership'],
-            ['label' => 'Our Approach', 'href' => '#approach'],
+            ['label' => 'Programs', 'href' => $home.'#programs'],
+            ['label' => 'Updates', 'href' => route('updates.index')],
+            ['label' => 'Rangers Partnership', 'href' => $home.'#partnership'],
+            ['label' => 'Our Approach', 'href' => $home.'#approach'],
         ],
         'Get Involved' => [
-            ['label' => 'Become a Partner', 'href' => '#contact'],
-            ['label' => 'Donate', 'href' => '#contact'],
-            ['label' => 'Volunteer', 'href' => '#contact'],
-            ['label' => 'Contact', 'href' => '#contact'],
+            ['label' => 'Become a Partner', 'href' => $home.'#contact'],
+            ['label' => 'Donate', 'href' => $home.'#contact'],
+            ['label' => 'Volunteer', 'href' => $home.'#contact'],
+            ['label' => 'Contact', 'href' => $home.'#contact'],
         ],
     ];
     $socials = [
@@ -35,7 +39,7 @@
         {{-- top --}}
         <div class="grid gap-12 py-16 lg:grid-cols-[1.4fr_2fr] lg:py-20">
             <div class="max-w-sm">
-                <a href="#top" class="flex items-center gap-3" aria-label="Nelo Dreams Foundation — home">
+                <a href="{{ $home }}#top" class="flex items-center gap-3" aria-label="Nelo Dreams Foundation — home">
                     <span class="h-12 w-12"><x-logo.nelo /></span>
                     <span class="flex flex-col leading-tight">
                         <span class="font-display text-lg font-extrabold">Nelo Dreams</span>
@@ -88,9 +92,12 @@
         {{-- bottom --}}
         <div class="flex flex-col gap-4 border-t border-white/10 py-7 text-sm text-electric-100/60 sm:flex-row sm:items-center sm:justify-between">
             <p>© 2018–{{ date('Y') }} Nelo Dreams Foundation International. All rights reserved.</p>
-            <p class="flex items-center gap-2">
+            <p class="flex flex-wrap items-center gap-2">
                 In strategic partnership with
                 <span class="font-semibold text-white">Rangers Int’l FC Foundation</span>
+                <span class="hidden text-electric-100/30 sm:inline">·</span>
+                <a href="{{ auth()->check() ? route('admin.dashboard') : route('login') }}"
+                   class="underline-offset-2 transition-colors hover:text-white hover:underline">Staff sign-in</a>
             </p>
         </div>
 

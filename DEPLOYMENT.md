@@ -133,6 +133,8 @@ Right‑click `.env` → **Edit** and fill in:
 | `DB_USERNAME`   | `USERNAME_nelouser`                                                    |
 | `DB_PASSWORD`   | the password you saved in step 2                                       |
 | `DEPLOY_SECRET` | a long random string — e.g. `openssl rand -hex 24` (32+ chars)         |
+| `ADMIN_EMAIL`   | the address the foundation will sign in to the admin panel with        |
+| `ADMIN_PASSWORD`| their password, at least 10 characters (leave blank and setup.php prints a random one) |
 | `MAIL_*`        | optional — fill in if you'll use the contact form to send emails       |
 
 Save the file.
@@ -172,7 +174,47 @@ If you see a generic 500 error, see *Troubleshooting* below.
 
 ---
 
-## Step 7 — Optional: Laravel scheduler (cron)
+## Step 7 — Hand over the admin panel
+
+The foundation posts its own photos, videos and write-ups at:
+
+```
+https://YOUR_DOMAIN.com/admin/login
+```
+
+(There's also a discreet **Staff sign-in** link in the website footer.)
+
+Sign in with the `ADMIN_EMAIL` / `ADMIN_PASSWORD` from step 4 and go to
+**My account** to change the password. What they can do:
+
+- **Posts** — write an update (headline, summary, full text, date, venue,
+  hashtags) and attach as many photos and videos as they like. Published posts
+  appear at `/updates` and in the *Latest Updates* section of the home page.
+- **Photos & videos** — upload single files, caption them, and choose whether
+  each one shows in the *From the field* gallery on the home page.
+- **Messages** — read and reply to contact-form enquiries.
+
+Uploads are written to `/public_html/uploads/` — **make sure that folder exists
+and is writable (755)**. It is deliberately excluded from the deploy bundle so
+re-deploying never overwrites what the foundation has already posted.
+
+### If large videos fail to upload
+
+Shared hosting usually caps uploads at 2MB. In cPanel → **Select PHP Version**
+→ *Options*, raise:
+
+| Setting               | Suggested |
+| --------------------- | --------- |
+| `upload_max_filesize` | `128M`    |
+| `post_max_size`       | `128M`    |
+| `max_execution_time`  | `300`     |
+| `memory_limit`        | `256M`    |
+
+The dashboard shows the limit the server is currently enforcing.
+
+---
+
+## Step 8 — Optional: Laravel scheduler (cron)
 
 If you later add scheduled tasks (e.g. periodic emails), cPanel → **Cron Jobs**
 → add:

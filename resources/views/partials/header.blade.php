@@ -1,11 +1,17 @@
 @php
+    // Absolute URLs so the same header works on /updates as well as the home page.
+    $home = route('home');
+
     $navLinks = [
-        ['label' => 'About', 'href' => '#about'],
-        ['label' => 'Programs', 'href' => '#programs'],
-        ['label' => 'Impact', 'href' => '#impact'],
-        ['label' => 'Partnership', 'href' => '#partnership'],
-        ['label' => 'Contact', 'href' => '#contact'],
+        ['label' => 'About', 'href' => $home.'#about'],
+        ['label' => 'Programs', 'href' => $home.'#programs'],
+        ['label' => 'Impact', 'href' => $home.'#impact'],
+        ['label' => 'Updates', 'href' => route('updates.index')],
+        ['label' => 'Partnership', 'href' => $home.'#partnership'],
+        ['label' => 'Contact', 'href' => $home.'#contact'],
     ];
+
+    $contactHref = $home.'#contact';
 @endphp
 
 <header x-data="siteHeader" @keydown.escape.window="mobileOpen = false"
@@ -14,7 +20,7 @@
     <nav class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-5 py-4 sm:px-8 lg:py-5"
          aria-label="Primary">
         {{-- Brand --}}
-        <a href="#top" class="group flex items-center gap-3" aria-label="Nelo Dreams Foundation — home">
+        <a href="{{ $home }}#top" class="group flex items-center gap-3" aria-label="Nelo Dreams Foundation — home">
             <span class="h-11 w-11 shrink-0 transition-transform duration-300 group-hover:scale-105">
                 <x-logo.nelo />
             </span>
@@ -39,11 +45,11 @@
 
         {{-- Desktop CTAs --}}
         <div class="hidden items-center gap-3 lg:flex">
-            <a href="#contact" class="text-sm font-semibold transition-colors"
+            <a href="{{ $contactHref }}" class="text-sm font-semibold transition-colors"
                :class="scrolled ? 'text-navy-700 hover:text-navy-900' : 'text-white/90 hover:text-white'">
                 Volunteer
             </a>
-            <x-button href="#contact" size="sm" icon="heart">Donate</x-button>
+            <x-button href="{{ $contactHref }}" size="sm" icon="heart">Donate</x-button>
         </div>
 
         {{-- Mobile toggle --}}
@@ -66,8 +72,8 @@
                 </a>
             @endforeach
             <div class="grid gap-3 pt-3">
-                <x-button href="#contact" @click="mobileOpen = false" variant="ghost" icon="hand-raised" class="w-full">Volunteer</x-button>
-                <x-button href="#contact" @click="mobileOpen = false" icon="heart" class="w-full">Donate</x-button>
+                <x-button href="{{ $contactHref }}" @click="mobileOpen = false" variant="ghost" icon="hand-raised" class="w-full">Volunteer</x-button>
+                <x-button href="{{ $contactHref }}" @click="mobileOpen = false" icon="heart" class="w-full">Donate</x-button>
             </div>
         </div>
     </div>

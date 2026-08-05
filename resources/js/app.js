@@ -66,6 +66,51 @@ Alpine.data('siteHeader', () => ({
     },
 }));
 
+/**
+ * Confirmation dialog — a single in-page modal shared by every destructive
+ * button in the admin panel, in place of the browser's own confirm() box.
+ *
+ * A button opts in with:
+ *   @click.prevent="$store.confirmDialog.ask($el.form, { title, message })"
+ *
+ * The button stays a real submit button, so if this script ever fails to load
+ * the form still works — it just submits without asking.
+ */
+Alpine.store('confirmDialog', {
+    open: false,
+    title: '',
+    message: '',
+    confirmLabel: 'Delete',
+    form: null,
+
+    ask(form, options = {}) {
+        this.form = form;
+        this.title = options.title ?? 'Are you sure?';
+        this.message = options.message ?? '';
+        this.confirmLabel = options.confirmLabel ?? 'Delete';
+        this.open = true;
+        document.documentElement.style.overflow = 'hidden';
+    },
+
+    cancel() {
+        this.open = false;
+        this.form = null;
+        document.documentElement.style.overflow = '';
+    },
+
+    confirm() {
+        const form = this.form;
+        this.cancel();
+
+        // requestSubmit() keeps native validation and the submit event intact.
+        if (form?.requestSubmit) {
+            form.requestSubmit();
+        } else {
+            form?.submit();
+        }
+    },
+});
+
 window.Alpine = Alpine;
 Alpine.start();
 

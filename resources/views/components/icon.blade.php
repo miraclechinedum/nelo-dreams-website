@@ -30,6 +30,8 @@
         'link' => '<path d="M9 15l6-6M10 6.5 12 4.5a3.5 3.5 0 0 1 5 5l-2 2M14 17.5 12 19.5a3.5 3.5 0 0 1-5-5l2-2"/>',
         'menu' => '<path d="M4 7h16M4 12h16M4 17h16"/>',
         'close' => '<path d="M6 6l12 12M18 6 6 18"/>',
+        'trash' => '<path d="M4 7h16M10 11v6M14 11v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>',
+        'warning' => '<path d="M12 4.5 2.8 20a1 1 0 0 0 .9 1.5h16.6a1 1 0 0 0 .9-1.5L12 4.5Z"/><path d="M12 10v4.5M12 17.6v.1"/>',
         'quote' => '<path d="M10 7H6a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v1a2 2 0 0 1-2 2m12-10h-4a2 2 0 0 0-2 2v3a2 2 0 0 0 2 2h2v1a2 2 0 0 1-2 2"/>',
         'play' => '<circle cx="12" cy="12" r="9"/><path d="m10 9 5 3-5 3V9Z" fill="currentColor" stroke="none"/>',
         'globe' => '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18Z"/>',

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\CoreValue;
-use App\Models\GalleryImage;
 use App\Models\ImpactStory;
+use App\Models\MediaItem;
 use App\Models\Objective;
 use App\Models\Partner;
+use App\Models\Post;
 use App\Models\Program;
 use App\Models\Statistic;
 use App\Models\Testimonial;
@@ -22,7 +23,8 @@ class HomeController extends Controller
             'coreValues' => CoreValue::active()->ordered()->get(),
             'programs' => Program::active()->ordered()->get(),
             'stories' => ImpactStory::active()->ordered()->get(),
-            'gallery' => GalleryImage::active()->ordered()->get(),
+            'gallery' => MediaItem::active()->inGallery()->ordered()->get(),
+            'posts' => Post::active()->with('media')->latestFirst()->limit(3)->get(),
             'testimonials' => Testimonial::active()->ordered()->get(),
             'rangers' => Partner::where('is_strategic', true)->active()->ordered()->first(),
             'partners' => Partner::where('is_strategic', false)->active()->ordered()->get(),
