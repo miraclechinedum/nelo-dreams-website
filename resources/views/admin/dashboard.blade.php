@@ -8,6 +8,7 @@
     <div class="flex flex-wrap gap-3">
         <a href="{{ route('admin.posts.create') }}" class="admin-btn"><x-icon name="megaphone" class="h-4 w-4" /> New post</a>
         <a href="{{ route('admin.media.create') }}" class="admin-btn-ghost"><x-icon name="sparkles" class="h-4 w-4" /> Upload media</a>
+        <a href="{{ route('admin.team.create') }}" class="admin-btn-ghost"><x-icon name="users" class="h-4 w-4" /> Add team member</a>
     </div>
 @endsection
 
@@ -17,11 +18,12 @@
             ['label' => 'Posts', 'value' => $postCount, 'note' => $publishedCount.' live', 'icon' => 'megaphone', 'href' => route('admin.posts.index')],
             ['label' => 'Photos', 'value' => $photoCount, 'note' => 'in the media library', 'icon' => 'sparkles', 'href' => route('admin.media.index', ['type' => 'image'])],
             ['label' => 'Videos', 'value' => $videoCount, 'note' => 'in the media library', 'icon' => 'play', 'href' => route('admin.media.index', ['type' => 'video'])],
+            ['label' => 'Team', 'value' => $teamCount, 'note' => 'on the home page', 'icon' => 'users', 'href' => route('admin.team.index')],
             ['label' => 'Messages', 'value' => $messageCount, 'note' => 'from the contact form', 'icon' => 'envelope', 'href' => route('admin.messages.index')],
         ];
     @endphp
 
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         @foreach ($tiles as $tile)
             <a href="{{ $tile['href'] }}" class="surface group p-5 transition hover:-translate-y-0.5">
                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-electric-50 text-electric-600">

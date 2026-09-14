@@ -21,6 +21,7 @@
         ['label' => 'Dashboard', 'route' => 'admin.dashboard', 'active' => 'admin.dashboard', 'icon' => 'chart'],
         ['label' => 'Posts', 'route' => 'admin.posts.index', 'active' => 'admin.posts.*', 'icon' => 'megaphone'],
         ['label' => 'Photos & videos', 'route' => 'admin.media.index', 'active' => 'admin.media.*', 'icon' => 'sparkles'],
+        ['label' => 'Team', 'route' => 'admin.team.index', 'active' => 'admin.team.*', 'icon' => 'users'],
         ['label' => 'Messages', 'route' => 'admin.messages.index', 'active' => 'admin.messages.*', 'icon' => 'envelope'],
     ];
 @endphp

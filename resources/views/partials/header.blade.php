@@ -6,6 +6,7 @@
         ['label' => 'About', 'href' => $home.'#about'],
         ['label' => 'Programs', 'href' => $home.'#programs'],
         ['label' => 'Impact', 'href' => $home.'#impact'],
+        ['label' => 'Team', 'href' => $home.'#team'],
         ['label' => 'Updates', 'href' => route('updates.index')],
         ['label' => 'Partnership', 'href' => $home.'#partnership'],
         ['label' => 'Contact', 'href' => $home.'#contact'],

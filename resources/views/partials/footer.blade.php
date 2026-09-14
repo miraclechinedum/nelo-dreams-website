@@ -8,6 +8,7 @@
             ['label' => 'Our Objectives', 'href' => $home.'#objectives'],
             ['label' => 'Core Values', 'href' => $home.'#values'],
             ['label' => 'Our Impact', 'href' => $home.'#impact'],
+            ['label' => 'Our Team', 'href' => $home.'#team'],
         ],
         'Our Work' => [
             ['label' => 'Programs', 'href' => $home.'#programs'],
@@ -22,13 +23,24 @@
             ['label' => 'Contact', 'href' => $home.'#contact'],
         ],
     ];
-    $socials = [
-        ['name' => 'facebook', 'href' => '#', 'label' => 'Facebook'],
-        ['name' => 'instagram', 'href' => '#', 'label' => 'Instagram'],
-        ['name' => 'x-social', 'href' => '#', 'label' => 'X'],
-        ['name' => 'linkedin', 'href' => '#', 'label' => 'LinkedIn'],
-        ['name' => 'youtube', 'href' => '#', 'label' => 'YouTube'],
+    // Only the pages the foundation actually has — see config/site.php.
+    $socialLabels = [
+        'facebook' => 'Facebook',
+        'instagram' => 'Instagram',
+        'x-social' => 'X',
+        'linkedin' => 'LinkedIn',
+        'youtube' => 'YouTube',
     ];
+    $socials = collect(config('site.socials'))
+        ->filter()
+        ->map(fn (string $href, string $name) => [
+            'name' => $name,
+            'href' => $href,
+            'label' => $socialLabels[$name] ?? $name,
+        ])
+        ->values();
+
+    $contactEmail = config('site.email');
 @endphp
 
 <footer class="relative overflow-hidden bg-navy-950 text-white">
@@ -53,7 +65,7 @@
 
                 <div class="mt-7 flex items-center gap-3">
                     @foreach ($socials as $social)
-                        <a href="{{ $social['href'] }}" aria-label="{{ $social['label'] }}"
+                        <a href="{{ $social['href'] }}" aria-label="{{ $social['label'] }}" target="_blank" rel="noopener"
                            class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-white transition-colors hover:bg-electric-500">
                             <x-icon :name="$social['name']" class="h-5 w-5" />
                         </a>
@@ -79,13 +91,13 @@
 
         {{-- contact strip --}}
         <div class="grid gap-4 border-t border-white/10 py-8 sm:grid-cols-2">
-            <a href="mailto:rangersintlfcfoundation@gmail.com" class="group inline-flex items-center gap-3 text-electric-100/80 transition-colors hover:text-white">
+            <a href="mailto:{{ $contactEmail }}" class="group inline-flex items-center gap-3 text-electric-100/80 transition-colors hover:text-white">
                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10 group-hover:bg-electric-500"><x-icon name="envelope" class="h-5 w-5" /></span>
-                rangersintlfcfoundation@gmail.com
+                <span class="break-all">{{ $contactEmail }}</span>
             </a>
             <div class="inline-flex items-center gap-3 text-electric-100/80 sm:justify-end">
                 <span class="inline-flex h-10 w-10 items-center justify-center rounded-full bg-white/10"><x-icon name="map-pin" class="h-5 w-5" /></span>
-                Enugu, Nigeria
+                {{ config('site.location') }}
             </div>
         </div>
 

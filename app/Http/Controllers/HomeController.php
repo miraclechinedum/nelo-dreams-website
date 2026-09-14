@@ -10,6 +10,7 @@ use App\Models\Partner;
 use App\Models\Post;
 use App\Models\Program;
 use App\Models\Statistic;
+use App\Models\TeamMember;
 use App\Models\Testimonial;
 use Illuminate\Contracts\View\View;
 
@@ -26,6 +27,7 @@ class HomeController extends Controller
             'gallery' => MediaItem::active()->inGallery()->ordered()->get(),
             'posts' => Post::active()->with('media')->latestFirst()->limit(3)->get(),
             'testimonials' => Testimonial::active()->ordered()->get(),
+            'team' => TeamMember::active()->ordered()->get(),
             'rangers' => Partner::where('is_strategic', true)->active()->ordered()->first(),
             'partners' => Partner::where('is_strategic', false)->active()->ordered()->get(),
         ]);

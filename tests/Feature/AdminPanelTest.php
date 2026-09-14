@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\MediaItem;
 use App\Models\Post;
+use App\Models\TeamMember;
 use App\Models\User;
 use App\Support\MediaStorage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -43,7 +44,7 @@ class AdminPanelTest extends TestCase
 
     public function test_admin_pages_require_signing_in(): void
     {
-        foreach (['/admin', '/admin/posts', '/admin/media', '/admin/messages', '/admin/account'] as $url) {
+        foreach (['/admin', '/admin/posts', '/admin/media', '/admin/team', '/admin/messages', '/admin/account'] as $url) {
             $this->get($url)->assertRedirect('/admin/login');
         }
     }
@@ -182,6 +183,84 @@ class AdminPanelTest extends TestCase
         $this->actingAs($this->admin())->delete(route('admin.media.destroy', $item));
 
         $this->assertFileExists(public_path('images/gallery/assembly.jpg'));
+    }
+
+    public function test_an_admin_can_add_a_team_member_with_a_photo(): void
+    {
+        $this->actingAs($this->admin())->post('/admin/team', [
+            'name' => 'Amaka S Obi',
+            'role' => 'Field Officer / Program',
+            'photo' => UploadedFile::fake()->image('amaka.jpg'),
+            'bio' => 'Runs the school programme across Enugu.',
+            'sort_order' => '3',
+            'is_active' => '1',
+        ])->assertRedirect('/admin/team');
+
+        $member = TeamMember::firstWhere('name', 'Amaka S Obi');
+        $this->written[] = $member->photo;
+
+        $this->assertNotNull($member);
+        $this->assertTrue($member->hasPhoto());
+        $this->assertStringStartsWith('uploads/', $member->photo);
+
+        // …and they are live on the home page.
+        $this->get('/')->assertOk()->assertSee('Amaka S Obi')->assertSee('Field Officer / Program');
+    }
+
+    public function test_a_team_member_can_be_added_without_a_photo(): void
+    {
+        $this->actingAs($this->admin())->post('/admin/team', [
+            'name' => 'Kennedy Onwunali',
+            'role' => 'Media Officer',
+            'is_active' => '1',
+        ])->assertRedirect('/admin/team');
+
+        $member = TeamMember::firstWhere('name', 'Kennedy Onwunali');
+
+        $this->assertNull($member->photo);
+        $this->assertSame('KO', $member->initials());
+        $this->get('/')->assertOk()->assertSee('Kennedy Onwunali');
+    }
+
+    public function test_a_team_member_needs_a_name_and_a_role(): void
+    {
+        $this->actingAs($this->admin())
+            ->from('/admin/team/create')
+            ->post('/admin/team', ['name' => '', 'role' => ''])
+            ->assertSessionHasErrors(['name', 'role']);
+
+        $this->assertSame(0, TeamMember::count());
+    }
+
+    public function test_hiding_a_team_member_takes_them_off_the_home_page(): void
+    {
+        $member = TeamMember::create(['name' => 'Esther Osayi', 'role' => 'Field Officer']);
+
+        $this->get('/')->assertSee('Esther Osayi');
+
+        $this->actingAs($this->admin())->patch(route('admin.team.toggle', $member));
+
+        $this->assertFalse($member->fresh()->is_active);
+        $this->get('/')->assertDontSee('Esther Osayi');
+    }
+
+    public function test_removing_a_team_member_deletes_their_uploaded_photo(): void
+    {
+        $this->actingAs($this->admin())->post('/admin/team', [
+            'name' => 'Temporary Person',
+            'role' => 'Volunteer',
+            'photo' => UploadedFile::fake()->image('temp.jpg'),
+            'is_active' => '1',
+        ]);
+
+        $member = TeamMember::firstWhere('name', 'Temporary Person');
+        $path = public_path($member->photo);
+        $this->assertFileExists($path);
+
+        $this->actingAs($this->admin())->delete(route('admin.team.destroy', $member));
+
+        $this->assertFileDoesNotExist($path);
+        $this->assertDatabaseMissing('team_members', ['id' => $member->id]);
     }
 
     public function test_an_admin_can_change_their_password(): void

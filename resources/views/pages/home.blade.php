@@ -13,6 +13,7 @@
     @include('partials.home.testimonials')
     @include('partials.home.partnership')
     @include('partials.home.approach')
+    @include('partials.home.team')
     @include('partials.home.cta')
     @include('partials.home.contact')
 @endsection

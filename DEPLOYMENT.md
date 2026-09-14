@@ -234,20 +234,52 @@ Not needed for the current site.
 
 ## Updating the site later
 
-When you change content on your Mac:
+> **Note on folder names.** The live server keeps the framework in
+> `/home/USERNAME/nelodreams-app/` — that is the path `public_html/index.php`
+> points at. Older parts of this guide say `laravel-app/`; wherever you see
+> that, read `nelodreams-app/`.
 
-1. Rebuild assets: `npm run build`
-2. Rebuild bundle: `bash deploy/build-bundle.sh`
-3. Upload the new zip → extract → overwrite
+For an ordinary change (new content, copy edits, a new section), build the two
+**incremental** zips rather than the full bundle:
 
-Or for tiny changes, just upload individual files via File Manager.
+```bash
+npm run build                  # compile CSS/JS
+bash deploy/build-update.sh    # -> nelodreams-app-update.zip + docroot-update.zip
+```
 
-To re‑seed gallery / programs without re‑running setup:
+`build-update.sh` works out what changed from git, so the zips contain only the
+changed files plus `public/build/`. It ships **no `vendor/`, no `.env` and no
+database**, and it never touches `uploads/`, so nothing the foundation has
+posted can be overwritten. Pass a git ref to build from a specific point:
+`bash deploy/build-update.sh HEAD~1`.
 
-1. Restore (temporarily) `setup.php` in `public_html`
-2. Delete `/public_html/.setup-done`
-3. Visit the URL again
-4. Delete `setup.php` again
+Then, in cPanel File Manager:
+
+1. Upload `nelodreams-app-update.zip` to `/home/USERNAME/nelodreams-app/` →
+   right-click → **Extract** → confirm **Overwrite existing files**.
+2. Upload `docroot-update.zip` to the document root (`public_html`) →
+   **Extract** → overwrite.
+3. Visit `https://YOUR_DOMAIN.com/update.php?token=YOUR_DEPLOY_SECRET`
+   (the `DEPLOY_SECRET` already in `laravel .env`). It runs any new migrations,
+   seeds only the seeders listed at the top of `deploy/update.php`, rebuilds the
+   config/route/view caches, and prints a short verification report.
+4. **Delete `update.php`** from the document root.
+5. Hard-refresh the site (**Ctrl/⌘ + Shift + R**).
+
+Step 3 is not optional when a release adds or changes a file in `config/`: the
+server runs with a cached config, and until it is rebuilt the new settings read
+as empty.
+
+### Why not just re-run `setup.php`?
+
+`setup.php` runs the **full** seeder. The content seeders use `updateOrCreate`,
+so a blanket re-seed would silently revert any edit the foundation has made from
+the admin panel to a seeded post, programme or photo. Use `update.php` instead;
+it only runs the seeders you name.
+
+If you do genuinely need to re-seed everything (e.g. restoring a wiped
+database), restore `setup.php`, delete `/public_html/.setup-done`, visit the URL,
+then delete `setup.php` again.
 
 ---
 

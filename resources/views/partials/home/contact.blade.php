@@ -1,5 +1,6 @@
 @php
-    $contactEmail = 'rangersintlfcfoundation@gmail.com';
+    $contactEmail = config('site.email');
+    $location = config('site.location');
     $interests = ['Partner', 'Donate', 'Volunteer', 'General'];
 @endphp
 
@@ -31,7 +32,7 @@
                             </span>
                             <span>
                                 <span class="block text-xs font-semibold uppercase tracking-wider text-navy-400">Location</span>
-                                <span class="block font-semibold text-navy-900">Enugu, Nigeria</span>
+                                <span class="block font-semibold text-navy-900">{{ $location }}</span>
                             </span>
                         </div>
                     </div>
@@ -41,8 +42,8 @@
                 <x-reveal :delay="160">
                     <div class="mt-6 overflow-hidden rounded-2xl bg-navy-100/50 shadow-sm ring-1 ring-navy-100">
                         <iframe
-                            title="Map showing Enugu, Nigeria"
-                            src="https://www.google.com/maps?q=Enugu,+Nigeria&output=embed"
+                            title="Map showing {{ $location }}"
+                            src="https://www.google.com/maps?q={{ urlencode($location) }}&output=embed"
                             class="h-64 w-full border-0 grayscale-[20%]"
                             loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>

@@ -71,6 +71,7 @@ changes required (each component checks `file_exists` and falls back to the plac
 | Program photos                | `public/images/programs/*.jpg`          |
 | Impact story photos           | `public/images/impact/*.jpg`            |
 | Gallery photos                | `public/images/gallery/*.jpg`           |
+| Team headshots                | `public/images/team/*.jpg` (see the README there) |
 | Featured impact video         | `public/videos/featured.mp4`            |
 
 `.png`, `.jpg`, `.jpeg`, `.svg` and `.webp` are all accepted for the logos. Image paths
@@ -136,10 +137,18 @@ and wired to an admin UI later. Each content model uses the `Publishable` trait 
 | `MediaItem`      | `media_items`      | Photos/videos: “From the field” gallery + post attachments |
 | `Partner`        | `partners`         | Rangers partnership + partners  |
 | `Testimonial`    | `testimonials`     | Community voices                |
+| `TeamMember`     | `team_members`     | “Our Team” section on the home page |
 | `ContactMessage` | `contact_messages` | Submitted contact enquiries     |
 
 Re‑seed any time with `php artisan db:seed` (idempotent — uses `updateOrCreate`;
 it never touches anything uploaded through the admin panel).
+
+### Contact details & social pages
+
+The public inbox, location and social links live in **`config/site.php`** — one place,
+used by the header, footer and contact section. A social entry left as `null` is simply
+not rendered, so the footer never shows a dead link. The email can also be overridden per
+environment with `SITE_EMAIL` in `.env`.
 
 ---
 
@@ -152,6 +161,7 @@ The foundation posts its own pictures, videos and write-ups at **`/admin`**
 | ------- | ------------ |
 | **Posts** | Headline, summary, full text, date, venue, hashtags — plus any number of attached photos and videos. Published posts appear at `/updates`, on the home page, and each gets its own page. |
 | **Photos & videos** | Upload individual files, caption them, set their size in the bento grid, and choose whether each shows in the “From the field” gallery. |
+| **Team** | Add, reorder, hide or remove the people shown in the home-page team section — name, role, photo, short bio and contact links. |
 | **Messages** | Contact-form enquiries. |
 | **My account** | Change name, sign-in email and password. |
 

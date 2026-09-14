@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\TeamMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -30,14 +31,33 @@ class HomePageTest extends TestCase
             ->assertSee('Mind Matters School Program')
             ->assertSee('Football Builds More Than Players')
             ->assertSee('Diamond Tech Innovations')
-            ->assertSee('rangersintlfcfoundation@gmail.com');
+            ->assertSee(config('site.email'));
+    }
+
+    public function test_homepage_shows_the_team(): void
+    {
+        $this->get('/')
+            ->assertSee('The People Behind the Work')
+            ->assertSee('Coach Ebere Amariazu')
+            ->assertSee('Executive Director')
+            ->assertSee('Esther Osayi');
+    }
+
+    public function test_a_hidden_team_member_is_not_shown(): void
+    {
+        $member = TeamMember::firstWhere('name', 'Esther Osayi');
+        $member->update(['is_active' => false]);
+
+        $this->get('/')
+            ->assertDontSee('Esther Osayi')
+            ->assertSee('Coach Ebere Amariazu');
     }
 
     public function test_homepage_renders_all_core_sections(): void
     {
         $response = $this->get('/');
 
-        foreach (['id="about"', 'id="objectives"', 'id="programs"', 'id="values"', 'id="impact"', 'id="partnership"', 'id="approach"', 'id="contact"'] as $marker) {
+        foreach (['id="about"', 'id="objectives"', 'id="programs"', 'id="values"', 'id="impact"', 'id="partnership"', 'id="approach"', 'id="team"', 'id="contact"'] as $marker) {
             $response->assertSee($marker, false);
         }
     }

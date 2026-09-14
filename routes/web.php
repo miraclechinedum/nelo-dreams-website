@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\MediaItemController;
 use App\Http\Controllers\Admin\MessageController;
 use App\Http\Controllers\Admin\PostController;
+use App\Http\Controllers\Admin\TeamMemberController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
@@ -59,6 +60,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     Route::resource('media', MediaItemController::class)->except('show')->parameters(['media' => 'media']);
     Route::patch('media/{media}/toggle', [MediaItemController::class, 'toggle'])->name('media.toggle');
+
+    Route::resource('team', TeamMemberController::class)->except('show');
+    Route::patch('team/{team}/toggle', [TeamMemberController::class, 'toggle'])->name('team.toggle');
 
     Route::get('messages', [MessageController::class, 'index'])->name('messages.index');
     Route::delete('messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');

@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             ProgramSeeder::class,
             ImpactStorySeeder::class,
             MediaItemSeeder::class,
+            TeamMemberSeeder::class,
             PostSeeder::class,
             PartnerSeeder::class,
             TestimonialSeeder::class,
